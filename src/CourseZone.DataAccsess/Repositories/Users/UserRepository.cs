@@ -106,6 +106,25 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
+    public async Task<User?> GetByEmailAsync(string email)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT *FROM users WHERE email = @Email;";
+            var data = await _connection.QuerySingleAsync<User>(query, new { Email = email});
+            return data;
+        }
+        catch 
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();  
+        }
+    }
+
     public Task<(int ItemsCount, IList<User>)> SearchAsync(string search, PaginationParams @params)
     {
         throw new NotImplementedException();
