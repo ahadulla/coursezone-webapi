@@ -19,22 +19,13 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> RegisterAsync([FromForm] RegisterDto registerDto)
     {
-        //var validator = new RegisterValidator();
-       // var result = validator.Validate(registerDto);
-        //if (result.IsValid)
-       // {
-            var serviceResult = await _authService.RegisterAsync(registerDto);
-            return Ok(new { serviceResult.Result, serviceResult.CachedMinutes });
-        //}
-        //else return BadRequest(result.Errors);
+        var serviceResult = await _authService.RegisterAsync(registerDto);
+        return Ok(new { serviceResult.Result, serviceResult.CachedMinutes });
     }
 
     [HttpPost("register/send-code")]
     public async Task<IActionResult> SendCodeRegisterAsync(string email)
     {
-        var result = true; //PhoneNumberValidator.IsValid(email);
-        if (result == false) return BadRequest("Email addres is invalid!");
-
         var serviceResult = await _authService.SendCodeForRegisterAsync(email);
         return Ok(new { serviceResult.Result, serviceResult.CachedVerificationMinutes });
     }

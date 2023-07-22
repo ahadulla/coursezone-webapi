@@ -2,9 +2,11 @@
 
 public class Course :Auditable
 {
-    public long Type { get; set; }
+    public string Language { get; set; } = string.Empty;
 
     public long UserId { get; set; }
+
+    public long CourseTypeId { get; set; }
 
     public string Name { get; set; } = string.Empty;
 

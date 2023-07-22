@@ -27,7 +27,7 @@ CREATE TABLE course_type
 CREATE TABLE course
 (
     id bigint generated always as identity primary key NOT NULL,
-	type integer,
+	language text,
     user_id bigint references users(id),
     course_type_id bigint references course_type(id),
     name text,

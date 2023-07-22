@@ -70,13 +70,13 @@ public class AuthService : IAuthService
             _memoryCache.Set(VERIFY_REGISTER_CACHE_KEY + email, verificationDto,
                 TimeSpan.FromMinutes(CACHED_MINUTES_FOR_VERIFICATION));
 
-            EmailMessage smsMessage = new EmailMessage();
-            smsMessage.Title = "Course Zone";
-            smsMessage.Content = "Your verification code : " + verificationDto.Code;
-            smsMessage.Recipent = email.Substring(1);
+            EmailMessage emailMessage = new EmailMessage();
+            emailMessage.Title = "Course Zone";
+            emailMessage.Content = "Your verification code : " + verificationDto.Code;
+            emailMessage.Recipent = email;
 
-            var smsResult = await _emailSender.SendAsync(smsMessage);
-            if (smsResult is true) return (Result: true, CachedVerificationMinutes: CACHED_MINUTES_FOR_VERIFICATION);
+            var emailResult = await _emailSender.SendAsync(emailMessage);
+            if (emailResult is true) return (Result: true, CachedVerificationMinutes: CACHED_MINUTES_FOR_VERIFICATION);
             else return (Result: false, CachedVerificationMinutes: 0);
         }
         else throw new UserCacheDataExpiredException();
