@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CourseZone.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace CourseZone.Domain.Entites.Users;
 
@@ -12,6 +13,8 @@ public class User : Auditable
 
     public string Email { get; set; } = string.Empty;
 
+    public bool EmailConfirmed { get; set; }
+
     [MaxLength(13)]
     public string PhoneNumber { get; set; } = String.Empty;
 
@@ -24,4 +27,6 @@ public class User : Auditable
     public string Salt { get; set; } = String.Empty;
 
     public bool IsDetated { get; set; }
+
+    public IdentityRole Role { get; set; }
 }

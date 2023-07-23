@@ -1,4 +1,6 @@
-﻿using CourseZone.DataAccsess.Interfaces.Users;
+﻿using AgileShop.Domain.Exceptions.Auth;
+using CourseZone.DataAccsess.Interfaces.Users;
+using CourseZone.DataAccsess.Repositories.Users;
 using CourseZone.Domain.Entites.Users;
 using CourseZone.Domain.Exceptions.Auth;
 using CourseZone.Domain.Exceptions.Users;
@@ -10,6 +12,7 @@ using CourseZone.Service.Dtos.Security;
 using CourseZone.Service.Interfaces.Auth;
 using CourseZone.Service.Interfaces.Notifcations;
 using Microsoft.Extensions.Caching.Memory;
+using System.Numerics;
 
 namespace CourseZone.Service.Services.Auth;
 
@@ -18,7 +21,7 @@ public class AuthService : IAuthService
     private readonly IMemoryCache _memoryCache;
     private readonly IUserRepository _repository;
     private readonly IEmailSender _emailSender;
-
+    private readonly ITokenService _tokenService;
     private const int CACHED_MINUTES_FOR_REGISTER = 60;
     private const int CACHED_MINUTES_FOR_VERIFICATION = 5;
         private const string REGISTER_CACHE_KEY = "register_";
@@ -27,11 +30,12 @@ public class AuthService : IAuthService
 
 
     public AuthService(IMemoryCache memoryCache, IUserRepository userRepository ,
-        IEmailSender emailSender)
+        IEmailSender emailSender , ITokenService tokenService)
     {
         this._memoryCache = memoryCache;
         this._repository = userRepository;
         this._emailSender = emailSender;
+        this._tokenService = tokenService;
 
     }
     #pragma warning disable
@@ -93,6 +97,12 @@ public class AuthService : IAuthService
                 else if (verificationDto.Code == code)
                 {
                     var dbResult = await RegisterToDatabaseAsync(registerDto);
+                    if (dbResult is true)
+                    {
+                        var user = await _repository.GetByEmailAsync(email);
+                        string token = await _tokenService.GenerateToken(user);
+                        return (Result: true, Token: token);
+                    }
                     return (Result: dbResult, Token: "");
 
                 }
@@ -116,6 +126,8 @@ public class AuthService : IAuthService
         user.FirstName = registerDto.FirstName;
         user.LastName = registerDto.LastName;
         user.Email = registerDto.Email;
+        user.EmailConfirmed = true;
+        user.Role = Domain.Enums.IdentityRole.User;
 
         var hasherResult = PasswordHasher.Hash(registerDto.Password);
         user.PasswordHash = hasherResult.Hash;
@@ -127,4 +139,15 @@ public class AuthService : IAuthService
         return dbResult > 0;
     }
 
+    public async Task<(bool Result, string Token)> LoginAsync(LoginDto loginDto)
+    {
+        var user = await _repository.GetByEmailAsync(loginDto.Email);
+        if (user is null) throw new UserNotFoundExcaption();
+
+        var hasherResult = PasswordHasher.Verify(loginDto.Password, user.PasswordHash, user.Salt);
+        if (hasherResult == false) throw new PasswordIncorrectException();
+
+        string token = await _tokenService.GenerateToken(user);
+        return (Result: true, Token: token);
+    }
 }

@@ -32,8 +32,8 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO users( first_name, last_name, email, phone_number, balance, avatar_path, password_hash, salt, created_at, updated_at, is_delated) " +
-                "VALUES(@FirstName, @LastName, @Email, @PhoneNumber, @Balance, @AvatarPath, @PasswordHash, @Salt, @CreatedAt, @UpdatedAt, @IsDetated); ";
+            string query = "INSERT INTO users( first_name, last_name, email, email_confirmed, phone_number, balance, avatar_path, password_hash, salt, identity_role, created_at, updated_at, is_delated) " +
+                "VALUES(@FirstName, @LastName, @Email, @EmailConfirmed, @PhoneNumber, @Balance, @AvatarPath, @PasswordHash, @Salt, @Role, @CreatedAt, @UpdatedAt, @IsDetated); ";
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
         }
@@ -71,7 +71,7 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $"select * from companies " +
+            string query = $"select * from users " +
                 $"order by id desc " +
                 $"offset {@params.GetSkipCount()} limit {@params.PageSize}";
             var result = (await _connection.QueryAsync<User>(query)).ToList();
@@ -136,9 +136,9 @@ public class UserRepository : BaseRepository, IUserRepository
         {
             await _connection.OpenAsync();
             string query = "UPDATE users " +
-                "SET first_name=@FirstName, last_name=@LastName, email=@Email, phone_number=@PhoneNumber, " +
+                "SET first_name=@FirstName, last_name=@LastName, email=@Email, email_confirmed=@EmailConfirmed, phone_number=@PhoneNumber, " +
                 "balance=@Balance, avatar_path=@AvatarPath, password_hash=@PasswordHash, salt=@Salt, " +
-                "created_at=@CreatedAt, updated_at=@UpdatedAt, is_delated=@IsDetated " +
+                "identity_role=@Role updated_at=@UpdatedAt, is_delated=@IsDetated " +
                 $"WHERE id = {id};";
             var result = await _connection.ExecuteAsync(query, entity);
             return result;

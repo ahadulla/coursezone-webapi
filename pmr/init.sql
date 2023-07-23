@@ -4,14 +4,17 @@ CREATE TABLE users
     first_name character varying(50) NOT NULL,
     last_name character varying(50),
     email text,
+	email_confirmed boolean default false,
     phone_number character varying(15),
     balance real,
     avatar_path text,
     password_hash text,
     salt text,
+	identity_role text not null,
     created_at timestamp without time zone default now(),
     updated_at timestamp without time zone default now(),
-    is_delated boolean
+    is_delated boolean default false
+
 );
 
 CREATE TABLE course_type
@@ -50,6 +53,7 @@ CREATE TABLE videos
 (
     id bigint generated always as identity primary key NOT NULL,
     course_id bigint references course(id),
+    name text,
     description text,
     video_path text,
     created_at timestamp without time zone default now(),
