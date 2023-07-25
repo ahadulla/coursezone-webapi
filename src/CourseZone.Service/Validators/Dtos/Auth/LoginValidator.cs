@@ -2,14 +2,14 @@
 using CourseZone.Service.Validators;
 using FluentValidation;
 
-namespace AgileShop.Service.Validators.Dtos.Auth;
+namespace CourseZone.Service.Validators.Dtos.Auth;
 
 public class LoginValidator : AbstractValidator<LoginDto>
 {
 	public LoginValidator()
 	{
         RuleFor(dto => dto.Email).Must(email => EmailValidator.IsValid(email))
-            .WithMessage("Phone number is invalid! ex: +998xxYYYAABB");
+            .WithMessage("Email addres is invalid! example@gmail.com");
 
         RuleFor(dto => dto.Password).Must(password => PasswordValidator.IsStrongPassword(password).IsValid)
             .WithMessage("Password is not strong password!");

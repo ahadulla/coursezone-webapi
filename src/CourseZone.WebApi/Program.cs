@@ -1,15 +1,6 @@
-using CourseZone.Service.Services.Common;
-using CourseZone.DataAccsess.Interfaces.Courses;
-using CourseZone.DataAccsess.Repositories.Courses;
-using CourseZone.Service.Interfaces.Common;
-using CourseZone.Service.Interfaces.Courses;
-using CourseZone.Service.Services.Courses;
-using CourseZone.Service.Services.Notifications;
-using CourseZone.Service.Interfaces.Notifcations;
-using CourseZone.DataAccsess.Interfaces.Users;
-using CourseZone.DataAccsess.Repositories.Users;
-using CourseZone.Service.Interfaces.Auth;
-using CourseZone.Service.Services.Auth;
+using CourseZone.WebApi.Configurations;
+using CourseZone.WebApi.Configurations.Layers;
+using CourseZone.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,17 +13,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
 
-builder.Services.AddScoped<ICourseTypeRepository, CourseTypeRepository>();
-builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-builder.Services.AddScoped<IFileService, FileService>();
-builder.Services.AddScoped<ICourseTypeService, CourseTypeService>();
-builder.Services.AddScoped<ICourseService, CourseService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
-
-builder.Services.AddSingleton<IEmailSender, EmailSender>();
+builder.ConfigureJwtAuth();
+builder.ConfigureSwaggerAuth();
+builder.ConfigureCORSPolicy();
+builder.ConfigureDataAccess();
+builder.ConfigureServiceLayer();
 
 
 var app = builder.Build();
@@ -46,7 +31,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowAll");
+
 app.UseStaticFiles();
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

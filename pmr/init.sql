@@ -22,7 +22,7 @@ CREATE TABLE course_type
     id bigint generated always as identity primary key NOT NULL,
     name character varying(50),
     description text,
-    video_path text,
+    image_path text,
     created_at timestamp without time zone default now(),
     updated_at timestamp without time zone default now()
 );

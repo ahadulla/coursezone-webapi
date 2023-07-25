@@ -28,5 +28,5 @@ public class User : Auditable
 
     public bool IsDetated { get; set; }
 
-    public IdentityRole Role { get; set; }
+    public IdentityRole IdentityRole { get; set; }
 }

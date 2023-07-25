@@ -1,6 +1,6 @@
 ﻿using CourseZone.Domain.Exceptions;
 
-namespace AgileShop.Domain.Exceptions.Auth;
+namespace CourseZone.Domain.Exceptions.Auth;
 
 public class PasswordIncorrectException : BadRequestException
 {

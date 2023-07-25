@@ -10,6 +10,14 @@ public class MediaHelper
         return name;
     }
 
+    public static string MakeVideoName(string filename)
+    {
+        FileInfo fileInfo = new FileInfo(filename);
+        string extension = fileInfo.Extension;
+        string name = "VIDEO_" + Guid.NewGuid() + extension;
+        return name;
+    }
+
     public static string[] GetImageExtensions()
     {
         return new string[]

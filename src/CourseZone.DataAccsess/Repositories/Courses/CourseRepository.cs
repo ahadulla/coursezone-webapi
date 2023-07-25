@@ -37,7 +37,7 @@ public class CourseRepository : BaseRepository, ICourseRepository
             string query = "INSERT INTO public.course( language, user_id, course_type_id, name, price, description, image_path, created_at, updated_at) " +
                 "VALUES (@Language, @UserId, @CoursetypeId, @Name, @Price, @Description, @ImagePath, @CreatedAt, @UpdatedAt);";
 
-            return await _connection.QuerySingleAsync<int>(query,entity);
+            return await _connection.ExecuteAsync(query,entity);
 
         }
         catch 

@@ -1,8 +1,7 @@
-﻿using AgileShop.Domain.Exceptions.Auth;
+﻿using CourseZone.Domain.Exceptions.Auth;
 using CourseZone.DataAccsess.Interfaces.Users;
 using CourseZone.DataAccsess.Repositories.Users;
 using CourseZone.Domain.Entites.Users;
-using CourseZone.Domain.Exceptions.Auth;
 using CourseZone.Domain.Exceptions.Users;
 using CourseZone.Service.Common.Helpers;
 using CourseZone.Service.Common.Security;
@@ -100,7 +99,7 @@ public class AuthService : IAuthService
                     if (dbResult is true)
                     {
                         var user = await _repository.GetByEmailAsync(email);
-                        string token = await _tokenService.GenerateToken(user);
+                        string token =  _tokenService.GenerateToken(user);
                         return (Result: true, Token: token);
                     }
                     return (Result: dbResult, Token: "");
@@ -127,7 +126,7 @@ public class AuthService : IAuthService
         user.LastName = registerDto.LastName;
         user.Email = registerDto.Email;
         user.EmailConfirmed = true;
-        user.Role = Domain.Enums.IdentityRole.User;
+        user.IdentityRole = Domain.Enums.IdentityRole.User;
 
         var hasherResult = PasswordHasher.Hash(registerDto.Password);
         user.PasswordHash = hasherResult.Hash;
@@ -147,7 +146,7 @@ public class AuthService : IAuthService
         var hasherResult = PasswordHasher.Verify(loginDto.Password, user.PasswordHash, user.Salt);
         if (hasherResult == false) throw new PasswordIncorrectException();
 
-        string token = await _tokenService.GenerateToken(user);
+        string token = _tokenService.GenerateToken(user);
         return (Result: true, Token: token);
     }
 }

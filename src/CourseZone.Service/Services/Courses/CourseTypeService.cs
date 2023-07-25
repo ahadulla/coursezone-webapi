@@ -16,11 +16,14 @@ public class CourseTypeService : ICourseTypeService
 {
     private readonly ICourseTypeRepository _repository;
     private readonly IFileService _fileService;
+    private readonly IPaginator _paginator;
+
     public CourseTypeService(ICourseTypeRepository courseTypeRepository,
-        IFileService fileService)
+        IFileService fileService, IPaginator paginator)
     {
         this._repository = courseTypeRepository;
         this._fileService = fileService;
+        this._paginator = paginator;
     }
 
     public async Task<long> CountAsync() => await _repository.CountAsync();
@@ -56,6 +59,8 @@ public class CourseTypeService : ICourseTypeService
     public async Task<IList<CourseType>> GetAllAsync(PaginationParams @params)
     {
         var courseTypes = await _repository.GetAllAsync(@params);
+        var count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
         return courseTypes;
     }
 

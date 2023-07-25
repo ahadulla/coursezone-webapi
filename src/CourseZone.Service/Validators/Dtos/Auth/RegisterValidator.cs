@@ -2,7 +2,7 @@
 using CourseZone.Service.Validators;
 using FluentValidation;
 
-namespace AgileShop.Service.Validators.Dtos.Auth;
+namespace CourseZone.Service.Validators.Dtos.Auth;
 
 public class RegisterValidator : AbstractValidator<RegisterDto>
 {
