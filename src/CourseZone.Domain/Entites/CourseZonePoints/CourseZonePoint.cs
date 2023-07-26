@@ -6,5 +6,5 @@ public class CourseZonePoint : BaseEntity
 
     public double Price { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreateAt { get; set; }
 }

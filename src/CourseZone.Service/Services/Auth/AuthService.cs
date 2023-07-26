@@ -103,7 +103,6 @@ public class AuthService : IAuthService
                         return (Result: true, Token: token);
                     }
                     return (Result: dbResult, Token: "");
-
                 }
                 else
                 {

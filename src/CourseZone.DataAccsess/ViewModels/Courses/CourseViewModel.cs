@@ -20,4 +20,6 @@ public class CourseViewModel : Auditable
 
     public string ImagePath { get; set; } = string.Empty;
 
+    public float StarCount { get; set; }
+
 }

@@ -13,7 +13,7 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $"SELECT count(*) from users";
+            string query = $"SELECT count(*) from users where is_delated = false ;";
             var result = await _connection.QuerySingleAsync<long>(query);
             return result;
         }
@@ -52,7 +52,7 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $"delete from users where id = @Id";
+            string query = $"UPDATE users set is_delated={true} where id = @Id";
             var result = await _connection.ExecuteAsync(query, new { Id = id });
             return result;
         }
@@ -92,7 +92,7 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $"select * from users where id = {id}";
+            string query = $"select * from users where id = {id} and is_delated = false ;";
             var result = await _connection.QuerySingleAsync<User>(query);
             return result;
         }
@@ -136,12 +136,32 @@ public class UserRepository : BaseRepository, IUserRepository
         {
             await _connection.OpenAsync();
             string query = "UPDATE users " +
-                "SET first_name=@FirstName, last_name=@LastName, email=@Email, email_confirmed=@EmailConfirmed, phone_number=@PhoneNumber, " +
-                "balance=@Balance, avatar_path=@AvatarPath, password_hash=@PasswordHash, salt=@Salt, " +
-                "identity_role=@Role updated_at=@UpdatedAt, is_delated=@IsDetated " +
+                "SET first_name = @FirstName, last_name = @LastName, email = @Email, email_confirmed = @EmailConfirmed, phone_number = @PhoneNumber, " +
+                "balance = @Balance, avatar_path = @AvatarPath, password_hash = @PasswordHash, salt = @Salt, " +
+                "identity_role = @IdentityRole, updated_at = @UpdatedAt, is_delated = @IsDetated " +
                 $"WHERE id = {id};";
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
+        }
+        catch
+        {
+            return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<int> UpdateBalanceAsync(long UserId, double balance)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "UPDATE public.users " +
+                $"SET balance = {balance} WHERE id = {UserId} ;";
+
+            return await _connection.ExecuteAsync(query);
         }
         catch
         {

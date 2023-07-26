@@ -4,6 +4,7 @@ using CourseZone.Service.Dtos.Videos;
 using CourseZone.Service.Interfaces.Videos;
 using CourseZone.Service.Validators.Dtos.Videos;
 using Google.Cloud.Storage.V1;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseZone.WebApi.Controllers;
@@ -22,19 +23,23 @@ public class VideosController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "User")]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
     [HttpGet("{videoId}")]
+    [Authorize(Roles = "User")]
     public async Task<IActionResult> GetByIdAsync([FromQuery] long videoId)
         =>Ok(await _service.GetByIdAsync(videoId));
 
     [HttpGet("count")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CountAsynv() => Ok(await _service.CountAsync());
 
     [HttpPost]
-    [RequestFormLimits(MultipartBodyLengthLimit = 314572800)]
-    [RequestSizeLimit(314572800)]
+    [RequestFormLimits(MultipartBodyLengthLimit = 314572801)]
+    [RequestSizeLimit(314572801)]
+    [Authorize(Roles = "User")]
     public async Task<IActionResult> CreateAsync([FromForm] VideoCreateDto dto)
     {
         var createValidator = new VideoCreateValidator();
@@ -46,6 +51,7 @@ public class VideosController : ControllerBase
     [HttpPut("{videoId}")]
     [RequestFormLimits(MultipartBodyLengthLimit = 314572800)]
     [RequestSizeLimit(314572800)]
+    [Authorize(Roles = "User")]
     public async Task<IActionResult> UpdateAsync(long videoId, [FromForm] VideoUpdateDto dto)
     {
         var updateValidator = new VideoUpdateValidator();
@@ -55,6 +61,7 @@ public class VideosController : ControllerBase
     }
 
     [HttpDelete("{videoId}")]
+    [AllowAnonymous]
     public async Task<IActionResult> DeleteAsync(long videoId)
         => Ok(await _service.DeleteAsync(videoId));
 

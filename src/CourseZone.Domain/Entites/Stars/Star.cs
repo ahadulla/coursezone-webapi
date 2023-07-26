@@ -1,6 +1,6 @@
 ﻿namespace CourseZone.Domain.Entites.Stars;
 
-public class Star : BaseEntity
+public class Star 
 {
     public long UserId { get; set; }
 

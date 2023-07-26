@@ -20,23 +20,23 @@ public class CourseController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
 
     [HttpGet("{courseId}")]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public async Task<IActionResult> GetByIdAsync(long courseId)
         =>Ok(await _service.GetByIdAsync(courseId));
 
     [HttpGet("count")]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public async Task<IActionResult> CountAsync() 
         => Ok(await _service.CountAsync());
 
     [HttpPost]
-    [Authorize(Roles = "User")]
+    //[Authorize(Roles = "User")]
     public async Task<IActionResult> CreateAsync([FromForm] CourseCreateDto dto)
     {
         var createValidator = new CourseCreateValidator();
@@ -46,7 +46,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpPut("{courseId}")]
-    [Authorize(Roles = "User")]
+    //[Authorize(Roles = "User")]
     public async Task<IActionResult> UpdateAsync(long courseId, [FromForm] CourseUpdateDto dto)
     {
         var updateValidator = new CourseUpdateValidator();
@@ -56,7 +56,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpDelete("{courseId}")]
-    [Authorize(Roles = "User")]
+    //[Authorize(Roles = "User")]
     public async Task<IActionResult> DeleteAsync(long courseId)
         => Ok(await _service.DeleteAsync(courseId));
 }

@@ -9,4 +9,6 @@ public class Video : Auditable
     public string Description { get; set; } = string.Empty;
 
     public string VideoPath { get; set; } = string.Empty;
+
+    public string ImagePath { get; set; } = string.Empty;
 }

@@ -19,7 +19,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public async Task<IActionResult> RegisterAsync([FromForm] RegisterDto registerDto)
     {
         var validator = new RegisterValidator();
@@ -33,7 +33,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register/send-code")]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public async Task<IActionResult> SendCodeRegisterAsync(string email)
     {
         var result = EmailValidator.IsValid(email);
@@ -44,7 +44,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register/verify")]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public async Task<IActionResult> VerifyRegisterAsync([FromBody] VerifyRegisterDto verifyRegisterDto)
     {
         var serviceResult = await _authService.VerifyRegisterAsync(verifyRegisterDto.Email, verifyRegisterDto.Code);
@@ -52,7 +52,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public async Task<IActionResult> LoginAsync([FromBody] LoginDto loginDto)
     {
         var validator = new LoginValidator();

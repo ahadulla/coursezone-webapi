@@ -1,5 +1,6 @@
 ﻿using CourseZone.DataAccsess.Interfaces.Videos;
 using CourseZone.DataAccsess.Utils;
+using CourseZone.Domain.Entites.Courses;
 using CourseZone.Domain.Entites.Videas;
 using CourseZone.Domain.Exceptions.Files;
 using CourseZone.Domain.Exceptions.Videos;
@@ -18,12 +19,16 @@ public class VideoService : IVideoService
     private IVideoRepository _repository;
     private IVideoProtsesService _videoService;
     private IPaginator _paginator;
+    private IFileService _fileService;
 
-    public VideoService(IVideoRepository videoRepository, IVideoProtsesService videoProtsesService, IPaginator paginator)
+    public VideoService(IVideoRepository videoRepository,
+        IVideoProtsesService videoProtsesService, IPaginator paginator,
+        IFileService fileService)
     {
         this._repository = videoRepository;
         this._videoService = videoProtsesService;
         this._paginator = paginator;
+        this._fileService = fileService;
     }
 
     public async Task<long> CountAsync() => await _repository.CountAsync();
@@ -31,12 +36,14 @@ public class VideoService : IVideoService
     public async Task<bool> CreateAsync(VideoCreateDto dto)
     {
         string videoPath = await _videoService.VideoUploadAsync(dto.Video)!;
+        string imagePath = await _fileService.UploadImageAsync(dto.Image);
         var video = new Video
         {
             CourseId = dto.CourseId,
             Name = dto.Name,
             Description = dto.Description,
             VideoPath = videoPath!,
+            ImagePath = imagePath,
             CreatedAt = TimeHelper.GetDateTime(),
             UpdatedAt = TimeHelper.GetDateTime(),
         };
@@ -51,6 +58,9 @@ public class VideoService : IVideoService
 
         var result = await _videoService.VideoDeleteAsync(video.VideoPath);
         if (result == false) throw new VideoNotFoundException();
+
+        result = await _fileService.DeleteImageAsync(video.ImagePath);
+        if (result == false) throw new ImageNotFoundException();
 
         var dbResult = await _repository.DeleteAsync(videoId);
         return dbResult > 0;
@@ -87,6 +97,15 @@ public class VideoService : IVideoService
             string newImagePath = await _videoService.VideoUploadAsync(dto.Video);
 
             video.VideoPath = newImagePath;
+        }
+        if (dto.Image is not null)
+        {
+            var deleteResult = await _fileService.DeleteImageAsync(video.ImagePath);
+            if (deleteResult is false) throw new ImageNotFoundException();
+
+            string newImagePath = await _fileService.UploadImageAsync(dto.Image);
+
+            video.ImagePath = newImagePath;
         }
 
         video.UpdatedAt = TimeHelper.GetDateTime();

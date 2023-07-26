@@ -10,5 +10,7 @@ public class VideoCreateDto
 
     public string Description { get; set; } = string.Empty;
 
-    public IFormFile Video { get; set; } = default!;    
+    public IFormFile Video { get; set; } = default!;
+
+    public IFormFile Image { get; set; } = default!;
 }

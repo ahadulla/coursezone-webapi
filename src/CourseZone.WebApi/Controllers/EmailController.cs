@@ -17,7 +17,7 @@ public class EmailController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public async Task<IActionResult> SendAsync([FromBody] EmailMessage smsMessage)
     {
         return Ok(await _smsSender.SendAsync(smsMessage));

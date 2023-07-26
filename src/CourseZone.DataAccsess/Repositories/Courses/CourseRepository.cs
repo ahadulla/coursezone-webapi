@@ -34,7 +34,7 @@ public class CourseRepository : BaseRepository, ICourseRepository
         {
             await _connection.OpenAsync();
 
-            string query = "INSERT INTO public.course( language, user_id, course_type_id, name, price, description, image_path, created_at, updated_at) " +
+            string query = "INSERT INTO course( language, user_id, course_type_id, name, price, description, image_path, created_at, updated_at) " +
                 "VALUES (@Language, @UserId, @CoursetypeId, @Name, @Price, @Description, @ImagePath, @CreatedAt, @UpdatedAt);";
 
             return await _connection.ExecuteAsync(query,entity);
@@ -76,8 +76,9 @@ public class CourseRepository : BaseRepository, ICourseRepository
         {
             await _connection.OpenAsync();
             string query = "SELECT course.id, course.language, users.first_name || ' ' ||users.last_name as creator, " +
-                " course_type.name as \"type\", course.name, course.price, course.description, course.image_path, " +
-                " course.created_at, course.updated_at FROM course join users on users.id = course.user_id " +
+                " course_type.name as course_type, course.name, course.price, course.description, course.image_path, " +
+                " course.created_at, course.updated_at, (select Avg(stars.star) as star_count from stars where stars.course_id = course.id) " +
+                " FROM course join users on users.id = course.user_id " +
                 " join course_type on course_type.id = course.course_type_id order by id desc " +
                 $" offset {@params.GetSkipCount()} limit {@params.PageSize}";
 
@@ -100,9 +101,10 @@ public class CourseRepository : BaseRepository, ICourseRepository
         {
             await _connection.OpenAsync();
             string query = "SELECT course.id, course.language, users.first_name || ' ' ||users.last_name as creator, " +
-                " course_type.name as \"type\", course.name, course.price, course.description, course.image_path, " +
-                " course.created_at, course.updated_at FROM course join users on users.id = course.user_id " +
-                " join course_type on course_type.id = course.course_type_id where id=@Id ";
+                " course_type.name as course_type, course.name, course.price, course.description, course.image_path, " +
+                " course.created_at, course.updated_at, (select Avg(stars.star) as star_count from stars where stars.course_id = course.id) " +
+                " FROM course join users on users.id = course.user_id " +
+                " join course_type on course_type.id = course.course_type_id where course.id=@Id ";
 
             var result = await _connection.QuerySingleAsync<CourseViewModel>(query, new {Id = id});
             return result;
@@ -123,9 +125,10 @@ public class CourseRepository : BaseRepository, ICourseRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT * FROM course WHERE id=Id;";
+            string query = "SELECT * FROM course WHERE id=@Id;";
 
-            return await _connection.QuerySingleAsync<Course>(query, new {Id = id});
+            var result= await _connection.QuerySingleAsync<Course>(query, new {Id = id});
+            return result;
         }
         catch 
         {

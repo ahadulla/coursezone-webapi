@@ -9,4 +9,6 @@ public class VideoUpdateDto
     public string Description { get; set; } = string.Empty;
 
     public IFormFile? Video { get; set; }
+
+    public IFormFile? Image { get; set; }
 }

@@ -31,5 +31,16 @@ public class MediaHelper
             // Svg files
             ".svg"
         };
-    } 
+    }
+
+    public static string[] GetVideoExtensions()
+    {
+        return new string[]
+        {
+            // mp4 files
+            ".mp4",
+            // mkv files
+            ".mkv",
+        };
+    }
 }

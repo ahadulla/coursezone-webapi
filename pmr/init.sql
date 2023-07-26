@@ -56,6 +56,7 @@ CREATE TABLE videos
     name text,
     description text,
     video_path text,
+    image_path text,
     created_at timestamp without time zone default now(),
     updated_at timestamp without time zone default now()
 );

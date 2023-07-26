@@ -6,8 +6,6 @@ namespace CourseZone.Service.Interfaces.Users;
 
 public interface IUserService
 {
-    public Task<bool> CreateAsync(UserCreateDto dto);
-
     public Task<bool> DeleteAsync(long userId);
 
     public Task<long> CountAsync();
@@ -16,5 +14,5 @@ public interface IUserService
 
     public Task<User> GetByIdAsync(long userId);
 
-    public Task<bool> UpdateAsync(long userId, UserCreateDto dto);
+    public Task<bool> UpdateAsync(long userId, UserUpdateDto dto);
 }

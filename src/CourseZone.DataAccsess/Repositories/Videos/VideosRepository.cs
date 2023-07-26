@@ -14,7 +14,7 @@ public class VideosRepository : BaseRepository, IVideoRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $"SELECT count(*) from users";
+            string query = $"SELECT count(*) from videos";
             var result = await _connection.QuerySingleAsync<long>(query);
             return result;
         }
@@ -33,8 +33,8 @@ public class VideosRepository : BaseRepository, IVideoRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO videos ( name, course_id, description, video_path, created_at, updated_at) " +
-                "VALUES (@Name, @CourseId, @Description, @VideoPath, @CreatedAt, @UpdatedAt);";
+            string query = "INSERT INTO videos ( name, course_id, description, video_path, image_path, created_at, updated_at) " +
+                "VALUES (@Name, @CourseId, @Description, @VideoPath,@ImagePath, @CreatedAt, @UpdatedAt);";
             var result = await _connection.ExecuteAsync(query, entity);
             return result;
         }
@@ -93,7 +93,7 @@ public class VideosRepository : BaseRepository, IVideoRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $"select * from users where id = {id}";
+            string query = $"select * from videos where id = {id}";
             var result = await _connection.QuerySingleAsync<Video>(query);
             return result;
         }
@@ -107,9 +107,25 @@ public class VideosRepository : BaseRepository, IVideoRepository
         }
     }
 
-    public Task<(int ItemsCount, IList<Video>)> SearchAsync(string search, PaginationParams @params)
+    public async Task<(int ItemsCount, IList<Video>)> SearchAsync(string search, PaginationParams @params)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "select *from videos where name ilike '%@Search%' order by id desc " +
+                        $" offset {@params.GetSkipCount()} limit {@params.PageSize};";
+            var result = (await _connection.QueryAsync<Video>(query, new { Search = search })).ToList();
+
+            return (result.Count(), result);
+        }
+        catch
+        {
+            return (0, new List<Video>());
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 
     public async Task<int> UpdateAsync(long id, Video entity)
@@ -118,7 +134,7 @@ public class VideosRepository : BaseRepository, IVideoRepository
         {
             await _connection.OpenAsync();
             string query = "UPDATE videos SET  " +
-                "name=@Name, course_id=@CourseId, description=@Description, video_path=@VideaPath, updated_at=@UpdateAt " +
+                " name = @Name, course_id = @CourseId, description = @Description, video_path = @VideoPath, image_path = @ImagePath, updated_at = @UpdatedAt " +
                 $" WHERE id={id};";
             var result = await _connection.ExecuteAsync(query, entity);
             return result;

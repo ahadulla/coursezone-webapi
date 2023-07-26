@@ -6,5 +6,5 @@ public class Order : BaseEntity
 
     public long CourseId { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreateAt { get; set; }
 }
