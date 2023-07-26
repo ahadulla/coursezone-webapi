@@ -1,13 +1,12 @@
-﻿using CourseZone.Service.Interfaces.Common;
-using CourseZone.DataAccsess.Interfaces.Courses;
+﻿using CourseZone.DataAccsess.Interfaces.Courses;
 using CourseZone.DataAccsess.Utils;
-using CourseZone.DataAccsess.ViewModels.Courses;
 using CourseZone.Domain.Entites.Courses;
 using CourseZone.Domain.Exceptions.Courses;
 using CourseZone.Domain.Exceptions.Files;
 using CourseZone.Service.Common.Helpers;
 using CourseZone.Service.Dtos.Categories;
 using CourseZone.Service.Dtos.Courses;
+using CourseZone.Service.Interfaces.Common;
 using CourseZone.Service.Interfaces.Courses;
 
 namespace CourseZone.Service.Services.Courses;

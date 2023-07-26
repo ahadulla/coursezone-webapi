@@ -1,7 +1,6 @@
 ﻿using CourseZone.DataAccess.Repositories;
 using CourseZone.DataAccsess.Interfaces.Videos;
 using CourseZone.DataAccsess.Utils;
-using CourseZone.Domain.Entites.Users;
 using CourseZone.Domain.Entites.Videas;
 using Dapper;
 
@@ -18,7 +17,7 @@ public class VideosRepository : BaseRepository, IVideoRepository
             var result = await _connection.QuerySingleAsync<long>(query);
             return result;
         }
-        catch 
+        catch
         {
             return 0;
         }

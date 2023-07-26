@@ -1,7 +1,6 @@
 ﻿using CourseZone.Service.Dtos.Notifications;
 using CourseZone.Service.Interfaces.Notifcations;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseZone.WebApi.Controllers;
@@ -17,7 +16,7 @@ public class EmailController : ControllerBase
     }
 
     [HttpPost]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> SendAsync([FromBody] EmailMessage smsMessage)
     {
         return Ok(await _smsSender.SendAsync(smsMessage));

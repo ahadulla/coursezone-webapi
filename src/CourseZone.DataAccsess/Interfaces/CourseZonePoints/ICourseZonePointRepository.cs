@@ -1,5 +1,4 @@
 ﻿using CourseZone.DataAccsess.Common.Interfaces;
-using CourseZone.DataAccsess.Utils;
 using CourseZone.Domain.Entites.CourseZonePoints;
 
 namespace CourseZone.DataAccsess.Interfaces.CourseZonePoints;

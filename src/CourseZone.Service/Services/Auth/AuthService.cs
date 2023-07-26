@@ -1,7 +1,6 @@
-﻿using CourseZone.Domain.Exceptions.Auth;
-using CourseZone.DataAccsess.Interfaces.Users;
-using CourseZone.DataAccsess.Repositories.Users;
+﻿using CourseZone.DataAccsess.Interfaces.Users;
 using CourseZone.Domain.Entites.Users;
+using CourseZone.Domain.Exceptions.Auth;
 using CourseZone.Domain.Exceptions.Users;
 using CourseZone.Service.Common.Helpers;
 using CourseZone.Service.Common.Security;
@@ -11,7 +10,6 @@ using CourseZone.Service.Dtos.Security;
 using CourseZone.Service.Interfaces.Auth;
 using CourseZone.Service.Interfaces.Notifcations;
 using Microsoft.Extensions.Caching.Memory;
-using System.Numerics;
 
 namespace CourseZone.Service.Services.Auth;
 
@@ -23,13 +21,13 @@ public class AuthService : IAuthService
     private readonly ITokenService _tokenService;
     private const int CACHED_MINUTES_FOR_REGISTER = 60;
     private const int CACHED_MINUTES_FOR_VERIFICATION = 5;
-        private const string REGISTER_CACHE_KEY = "register_";
+    private const string REGISTER_CACHE_KEY = "register_";
     private const string VERIFY_REGISTER_CACHE_KEY = "verify_register_";
     private const int VERIFICATION_MAXIMUM_ATTEMPTS = 3;
 
 
-    public AuthService(IMemoryCache memoryCache, IUserRepository userRepository ,
-        IEmailSender emailSender , ITokenService tokenService)
+    public AuthService(IMemoryCache memoryCache, IUserRepository userRepository,
+        IEmailSender emailSender, ITokenService tokenService)
     {
         this._memoryCache = memoryCache;
         this._repository = userRepository;
@@ -37,7 +35,7 @@ public class AuthService : IAuthService
         this._tokenService = tokenService;
 
     }
-    #pragma warning disable
+#pragma warning disable
     public async Task<(bool Result, int CachedMinutes)> RegisterAsync(RegisterDto dto)
     {
         var User = await _repository.GetByEmailAsync(dto.Email);
@@ -99,7 +97,7 @@ public class AuthService : IAuthService
                     if (dbResult is true)
                     {
                         var user = await _repository.GetByEmailAsync(email);
-                        string token =  _tokenService.GenerateToken(user);
+                        string token = _tokenService.GenerateToken(user);
                         return (Result: true, Token: token);
                     }
                     return (Result: dbResult, Token: "");
@@ -131,7 +129,7 @@ public class AuthService : IAuthService
         user.PasswordHash = hasherResult.Hash;
         user.Salt = hasherResult.Salt;
 
-        user.CreatedAt = user.UpdatedAt  = TimeHelper.GetDateTime();
+        user.CreatedAt = user.UpdatedAt = TimeHelper.GetDateTime();
 
         var dbResult = await _repository.CreateAsync(user);
         return dbResult > 0;

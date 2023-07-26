@@ -16,7 +16,7 @@ public class CourseZonePointRepository : BaseRepository, ICourseZonePointReposit
                 "VALUES (@OrderId, @Price, @CreateAt);";
             return await _connection.ExecuteAsync(query, entity);
         }
-        catch 
+        catch
         {
             return 0;
         }
@@ -36,7 +36,7 @@ public class CourseZonePointRepository : BaseRepository, ICourseZonePointReposit
 
             return (await _connection.QueryAsync<CourseZonePoint>(query)).ToList();
         }
-        catch 
+        catch
         {
             return new List<CourseZonePoint>();
         }

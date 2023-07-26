@@ -18,7 +18,7 @@ public class StarsController : ControllerBase
     }
 
     [HttpPost]
-    //[Authorize(Roles = "User")]
+    [Authorize(Roles = "User")]
     public async Task<IActionResult> CreateAsync([FromQuery] Star dto)
     {
         var createValidator = new StarCreateValidator();

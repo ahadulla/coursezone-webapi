@@ -1,11 +1,9 @@
-﻿using CourseZone.Domain.Exceptions;
-
-namespace CourseZone.Domain.Exceptions.Auth;
+﻿namespace CourseZone.Domain.Exceptions.Auth;
 
 public class PasswordIncorrectException : BadRequestException
 {
-	public PasswordIncorrectException()
-	{
-		TitleMessage = "Password is invalid!";
-	}
+    public PasswordIncorrectException()
+    {
+        TitleMessage = "Password is invalid!";
+    }
 }

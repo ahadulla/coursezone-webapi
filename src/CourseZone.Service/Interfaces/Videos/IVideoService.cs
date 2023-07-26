@@ -1,9 +1,6 @@
 ﻿using CourseZone.DataAccsess.Utils;
-using CourseZone.DataAccsess.ViewModels.Courses;
 using CourseZone.Domain.Entites.Videas;
-using CourseZone.Service.Dtos.Courses;
 using CourseZone.Service.Dtos.Videos;
-using Microsoft.AspNetCore.Http;
 
 namespace CourseZone.Service.Interfaces.Videos;
 

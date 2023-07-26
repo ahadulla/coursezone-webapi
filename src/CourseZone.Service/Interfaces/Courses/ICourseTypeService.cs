@@ -1,10 +1,7 @@
 ﻿using CourseZone.DataAccsess.Utils;
-using CourseZone.DataAccsess.ViewModels.Courses;
 using CourseZone.Domain.Entites.Courses;
-using CourseZone.Domain.Entites.Users;
 using CourseZone.Service.Dtos.Categories;
 using CourseZone.Service.Dtos.Courses;
-using CourseZone.Service.Dtos.Users;
 
 namespace CourseZone.Service.Interfaces.Courses;
 

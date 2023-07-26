@@ -6,7 +6,7 @@ public class MediaHelper
     {
         FileInfo fileInfo = new FileInfo(filename);
         string extension = fileInfo.Extension;
-        string name = "IMG_" + Guid.NewGuid()+extension;
+        string name = "IMG_" + Guid.NewGuid() + extension;
         return name;
     }
 

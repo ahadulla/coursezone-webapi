@@ -8,7 +8,6 @@ using CourseZone.Service.Common.Helpers;
 using CourseZone.Service.Dtos.Courses;
 using CourseZone.Service.Interfaces.Common;
 using CourseZone.Service.Interfaces.Courses;
-using System;
 
 namespace CourseZone.Service.Services.Courses;
 
@@ -18,7 +17,7 @@ public class CourseService : ICourseService
     private readonly IFileService _fileService;
     private readonly IPaginator _paginator;
 
-    public CourseService(ICourseRepository courseRepository,IFileService fileService, IPaginator paginator)
+    public CourseService(ICourseRepository courseRepository, IFileService fileService, IPaginator paginator)
     {
         this._repository = courseRepository;
         this._fileService = fileService;
@@ -76,7 +75,7 @@ public class CourseService : ICourseService
     public async Task<bool> UpdateAsync(long CourseId, CourseUpdateDto dto)
     {
         var course = await _repository.GetByIdAsyncSpecial(CourseId);
-        if(course is null) throw new CourseNotFoundException();
+        if (course is null) throw new CourseNotFoundException();
 
         course.Language = dto.Language;
         course.CourseTypeId = dto.TypeId;
@@ -84,7 +83,7 @@ public class CourseService : ICourseService
         course.Price = dto.Price;
         course.Description = dto.Description;
 
-        if(dto.Image is not null)
+        if (dto.Image is not null)
         {
             var deleteResult = await _fileService.DeleteImageAsync(course.ImagePath);
             if (deleteResult is false) throw new ImageNotFoundException();

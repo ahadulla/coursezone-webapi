@@ -7,6 +7,6 @@ public class UserUpdateValidator : AbstractValidator<UserUpdateDto>
 {
     public UserUpdateValidator()
     {
-            
+
     }
 }

@@ -18,10 +18,10 @@ public class Paginator : IPaginator
     {
         PaginationMetaData paginationMetaData = new PaginationMetaData();
         paginationMetaData.CurrentPage = @params.PageNumber;
-        paginationMetaData.TotalItems = (int) itemsCount;
+        paginationMetaData.TotalItems = (int)itemsCount;
         paginationMetaData.PageSize = @params.PageSize;
 
-        paginationMetaData.TotalPages = (int) Math.Ceiling((double)itemsCount / @params.PageSize);
+        paginationMetaData.TotalPages = (int)Math.Ceiling((double)itemsCount / @params.PageSize);
         paginationMetaData.HasPrevious = paginationMetaData.CurrentPage > 1;
         paginationMetaData.HasNext = paginationMetaData.CurrentPage < paginationMetaData.TotalPages;
 

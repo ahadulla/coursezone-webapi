@@ -20,7 +20,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<IActionResult> CreateAsync([FromForm] OrderCreateDto dto)
     {
         var createValidetor = new OrderCreateValidator();
@@ -31,7 +31,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
 }

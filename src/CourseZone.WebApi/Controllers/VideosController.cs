@@ -1,9 +1,7 @@
-﻿using CourseZone.DataAccsess.Interfaces.Videos;
-using CourseZone.DataAccsess.Utils;
+﻿using CourseZone.DataAccsess.Utils;
 using CourseZone.Service.Dtos.Videos;
 using CourseZone.Service.Interfaces.Videos;
 using CourseZone.Service.Validators.Dtos.Videos;
-using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +28,7 @@ public class VideosController : ControllerBase
     [HttpGet("{videoId}")]
     [Authorize(Roles = "User")]
     public async Task<IActionResult> GetByIdAsync([FromQuery] long videoId)
-        =>Ok(await _service.GetByIdAsync(videoId));
+        => Ok(await _service.GetByIdAsync(videoId));
 
     [HttpGet("count")]
     [Authorize(Roles = "Admin")]
@@ -56,7 +54,7 @@ public class VideosController : ControllerBase
     {
         var updateValidator = new VideoUpdateValidator();
         var result = updateValidator.Validate(dto);
-        if(result.IsValid) return Ok(await _service.UpdateAsync(videoId, dto));
+        if (result.IsValid) return Ok(await _service.UpdateAsync(videoId, dto));
         else return BadRequest(result.Errors);
     }
 

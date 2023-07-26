@@ -19,7 +19,7 @@ public class Orderservice : IOrderService
     private ICourseZonePointRepository _courseZonePointRepository;
     private ITransactionService _transactionService;
 
-    public Orderservice(IOrderRepository orderRepository, IPaginator paginator, 
+    public Orderservice(IOrderRepository orderRepository, IPaginator paginator,
         ICourseRepository courseRepository, ICourseZonePointRepository courseZonePointRepository,
         ITransactionService transactionService)
     {
@@ -42,11 +42,11 @@ public class Orderservice : IOrderService
             var check = await _transactionService.TransactionBuy(course.UserId, dto.UserId, course.Price);
             CourseZonePoint courseZonePoint = new CourseZonePoint();
             courseZonePoint.OrderId = result;
-            courseZonePoint.Price = (course.Price/100)*10;
+            courseZonePoint.Price = (course.Price / 100) * 10;
             courseZonePoint.CreateAt = TimeHelper.GetDateTime();
             result = await _courseZonePointRepository.CreateCourseZonePointsAsync(courseZonePoint);
 
-            if(check && result > 0)
+            if (check && result > 0)
             {
                 return true;
             }

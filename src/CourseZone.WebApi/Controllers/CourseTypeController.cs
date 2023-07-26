@@ -1,10 +1,10 @@
-﻿using CourseZone.Service.Validators.Dtos.Categories;
-using CourseZone.DataAccsess.Utils;
+﻿using CourseZone.DataAccsess.Utils;
 using CourseZone.Service.Dtos.Categories;
 using CourseZone.Service.Dtos.Courses;
 using CourseZone.Service.Interfaces.Courses;
-using Microsoft.AspNetCore.Mvc;
+using CourseZone.Service.Validators.Dtos.Categories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CourseZone.WebApi.Controllers;
 
@@ -20,22 +20,22 @@ public class CourseTypeController : ControllerBase
     }
 
     [HttpGet]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
     [HttpGet("{typeId}")]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<IActionResult> GetByIdAsync(long typeId)
         => Ok(await _service.GetByIdAsync(typeId));
 
     [HttpGet("count")]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<IActionResult> CountAsync()
         => Ok(await _service.CountAsync());
 
     [HttpPost]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] CourseTypeCreateDto dto)
     {
         var createValidator = new CourseTypeCreateValidator();
@@ -45,7 +45,7 @@ public class CourseTypeController : ControllerBase
     }
 
     [HttpPut("{typeId}")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateAsync(long typeId, [FromForm] CourseTypeUpdateDto dto)
     {
         var updateValidator = new CourseTypeUpdateValidator();
@@ -55,7 +55,7 @@ public class CourseTypeController : ControllerBase
     }
 
     [HttpDelete("{typeId}")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long typeId)
         => Ok(await _service.DeleteAsync(typeId));
 }

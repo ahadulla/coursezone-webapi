@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CourseZone.Service.Dtos.Users;
+﻿namespace CourseZone.Service.Dtos.Users;
 
 public class UserUpdateDto
 {

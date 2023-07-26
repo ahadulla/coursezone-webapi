@@ -1,13 +1,12 @@
 ﻿using CourseZone.Service.Dtos.Auth;
-using CourseZone.Service.Validators;
 using FluentValidation;
 
 namespace CourseZone.Service.Validators.Dtos.Auth;
 
 public class LoginValidator : AbstractValidator<LoginDto>
 {
-	public LoginValidator()
-	{
+    public LoginValidator()
+    {
         RuleFor(dto => dto.Email).Must(email => EmailValidator.IsValid(email))
             .WithMessage("Email addres is invalid! example@gmail.com");
 

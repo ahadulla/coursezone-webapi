@@ -112,16 +112,16 @@ public class UserRepository : BaseRepository, IUserRepository
         {
             await _connection.OpenAsync();
             string query = "SELECT *FROM users WHERE email = @Email;";
-            var data = await _connection.QuerySingleAsync<User>(query, new { Email = email});
+            var data = await _connection.QuerySingleAsync<User>(query, new { Email = email });
             return data;
         }
-        catch 
+        catch
         {
             return null;
         }
         finally
         {
-            await _connection.CloseAsync();  
+            await _connection.CloseAsync();
         }
     }
 

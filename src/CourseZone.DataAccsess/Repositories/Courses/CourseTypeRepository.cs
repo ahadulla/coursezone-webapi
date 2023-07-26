@@ -1,7 +1,6 @@
 ﻿using CourseZone.DataAccess.Repositories;
 using CourseZone.DataAccsess.Interfaces.Courses;
 using CourseZone.DataAccsess.Utils;
-using CourseZone.DataAccsess.ViewModels.Courses;
 using CourseZone.Domain.Entites.Courses;
 using Dapper;
 

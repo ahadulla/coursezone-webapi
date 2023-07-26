@@ -48,6 +48,6 @@ public class EmailSender : IEmailSender
         {
             return false;
         }
-        
+
     }
 }

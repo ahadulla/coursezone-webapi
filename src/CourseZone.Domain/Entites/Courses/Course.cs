@@ -1,6 +1,6 @@
 ﻿namespace CourseZone.Domain.Entites.Courses;
 
-public class Course :Auditable
+public class Course : Auditable
 {
     public string Language { get; set; } = string.Empty;
 

@@ -37,10 +37,10 @@ public class CourseRepository : BaseRepository, ICourseRepository
             string query = "INSERT INTO course( language, user_id, course_type_id, name, price, description, image_path, created_at, updated_at) " +
                 "VALUES (@Language, @UserId, @CoursetypeId, @Name, @Price, @Description, @ImagePath, @CreatedAt, @UpdatedAt);";
 
-            return await _connection.ExecuteAsync(query,entity);
+            return await _connection.ExecuteAsync(query, entity);
 
         }
-        catch 
+        catch
         {
             return 0;
         }
@@ -58,15 +58,15 @@ public class CourseRepository : BaseRepository, ICourseRepository
 
             string query = "DELETE FROM course WHERE id=@Id";
 
-            return await _connection.ExecuteAsync(query, new {Id = id});
+            return await _connection.ExecuteAsync(query, new { Id = id });
         }
-        catch 
+        catch
         {
             return 0;
         }
-        finally 
+        finally
         {
-            await _connection.CloseAsync(); 
+            await _connection.CloseAsync();
         }
     }
 
@@ -106,7 +106,7 @@ public class CourseRepository : BaseRepository, ICourseRepository
                 " FROM course join users on users.id = course.user_id " +
                 " join course_type on course_type.id = course.course_type_id where course.id=@Id ";
 
-            var result = await _connection.QuerySingleAsync<CourseViewModel>(query, new {Id = id});
+            var result = await _connection.QuerySingleAsync<CourseViewModel>(query, new { Id = id });
             return result;
         }
         catch
@@ -127,16 +127,16 @@ public class CourseRepository : BaseRepository, ICourseRepository
             await _connection.OpenAsync();
             string query = "SELECT * FROM course WHERE id=@Id;";
 
-            var result= await _connection.QuerySingleAsync<Course>(query, new {Id = id});
+            var result = await _connection.QuerySingleAsync<Course>(query, new { Id = id });
             return result;
         }
-        catch 
+        catch
         {
             return null;
         }
-        finally 
+        finally
         {
-            await _connection.CloseAsync(); 
+            await _connection.CloseAsync();
         }
     }
 

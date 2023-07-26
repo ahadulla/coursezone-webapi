@@ -1,6 +1,5 @@
 ﻿using CourseZone.DataAccsess.Interfaces.Videos;
 using CourseZone.DataAccsess.Utils;
-using CourseZone.Domain.Entites.Courses;
 using CourseZone.Domain.Entites.Videas;
 using CourseZone.Domain.Exceptions.Files;
 using CourseZone.Domain.Exceptions.Videos;
@@ -8,9 +7,6 @@ using CourseZone.Service.Common.Helpers;
 using CourseZone.Service.Dtos.Videos;
 using CourseZone.Service.Interfaces.Common;
 using CourseZone.Service.Interfaces.Videos;
-using CourseZone.Service.Services.Common;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace CourseZone.Service.Services.Videos;
 
@@ -77,7 +73,7 @@ public class VideoService : IVideoService
     public async Task<Video> GetByIdAsync(long videoId)
     {
         var video = await _repository.GetByIdAsync(videoId);
-        if(video is null) throw new VideoNotFoundException();
+        if (video is null) throw new VideoNotFoundException();
         return video;
     }
 

@@ -1,5 +1,4 @@
 ﻿using CourseZone.Domain.Entites;
-using System.Data;
 
 namespace CourseZone.DataAccsess.ViewModels.Courses;
 

@@ -1,6 +1,4 @@
-﻿using MimeKit.Text;
-
-namespace CourseZone.Service.Interfaces.Common;
+﻿namespace CourseZone.Service.Interfaces.Common;
 
 public interface ITransactionService
 {
