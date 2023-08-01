@@ -32,7 +32,7 @@ public class VideoProtsesService : IVideoProtsesService
         return true;
     }
 
-    public async Task<string> VideoUploadAsync(IFormFile video)
+    public async Task<string?> VideoUploadAsync(IFormFile video)
     {
 
         string objectName = MediaHelper.MakeVideoName(video.FileName);
@@ -42,8 +42,8 @@ public class VideoProtsesService : IVideoProtsesService
             await video.CopyToAsync(memoryStream);
             memoryStream.Position = 0;
             var storageObject = await _storageClient.UploadObjectAsync(bucketName, objectName, null, memoryStream);
-            return objectName;
+            if (storageObject != null) return objectName;
+            else return null;
         }
-
     }
 }

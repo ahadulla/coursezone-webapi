@@ -34,6 +34,7 @@ public static class ServiceLayerConfiguration
         builder.Services.AddScoped<IOrderService, Orderservice>();
         builder.Services.AddScoped<ITransactionService, TransactionService>();
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IIdentityService, IdentityService>();
 
 
         builder.Services.AddSingleton<IEmailSender, EmailSender>();

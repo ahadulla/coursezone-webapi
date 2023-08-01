@@ -2,10 +2,12 @@
 using CourseZone.DataAccsess.Utils;
 using CourseZone.DataAccsess.ViewModels.Courses;
 using CourseZone.Domain.Entites.Courses;
+using CourseZone.Domain.Enums;
 using CourseZone.Domain.Exceptions.Courses;
 using CourseZone.Domain.Exceptions.Files;
 using CourseZone.Service.Common.Helpers;
 using CourseZone.Service.Dtos.Courses;
+using CourseZone.Service.Interfaces.Auth;
 using CourseZone.Service.Interfaces.Common;
 using CourseZone.Service.Interfaces.Courses;
 
@@ -16,12 +18,15 @@ public class CourseService : ICourseService
     private readonly ICourseRepository _repository;
     private readonly IFileService _fileService;
     private readonly IPaginator _paginator;
+    private readonly IIdentityService _identity;
 
-    public CourseService(ICourseRepository courseRepository, IFileService fileService, IPaginator paginator)
+    public CourseService(ICourseRepository courseRepository, IFileService fileService,
+        IPaginator paginator, IIdentityService identityService)
     {
         this._repository = courseRepository;
         this._fileService = fileService;
         this._paginator = paginator;
+        this._identity = identityService;
     }
 
     public async Task<long> CountAsync() => await _repository.CountAsync();
@@ -32,7 +37,7 @@ public class CourseService : ICourseService
         Course course = new Course()
         {
             Language = dto.Language,
-            UserId = dto.UserId,
+            UserId = _identity.UserId,
             CourseTypeId = dto.TypeId,
             Name = dto.Name,
             Price = dto.Price,
@@ -49,6 +54,7 @@ public class CourseService : ICourseService
     {
         var course = await _repository.GetByIdAsyncSpecial(CourseId);
         if (course is null) throw new CourseNotFoundException();
+        if (_identity.UserId != course.UserId && _identity.IdentityRole != IdentityRole.Admin) throw new CourseNotFoundException();
 
         var result = await _fileService.DeleteImageAsync(course.ImagePath);
         if (result == false) throw new ImageNotFoundException();
@@ -76,6 +82,7 @@ public class CourseService : ICourseService
     {
         var course = await _repository.GetByIdAsyncSpecial(CourseId);
         if (course is null) throw new CourseNotFoundException();
+        if (_identity.UserId != course.UserId) throw new CourseNotFoundException();
 
         course.Language = dto.Language;
         course.CourseTypeId = dto.TypeId;

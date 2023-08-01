@@ -7,7 +7,6 @@ public class OrderCreateValidator : AbstractValidator<OrderCreateDto>
 {
     public OrderCreateValidator()
     {
-        RuleFor(dto => dto.UserId).NotNull().NotEmpty().WithMessage("UserId field is required!");
         RuleFor(dto => dto.CourseId).NotNull().NotEmpty().WithMessage("CourseId field is required!");
     }
 }

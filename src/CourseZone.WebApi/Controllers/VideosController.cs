@@ -27,7 +27,7 @@ public class VideosController : ControllerBase
 
     [HttpGet("{videoId}")]
     [Authorize(Roles = "User")]
-    public async Task<IActionResult> GetByIdAsync([FromQuery] long videoId)
+    public async Task<IActionResult> GetByIdAsync(long videoId)
         => Ok(await _service.GetByIdAsync(videoId));
 
     [HttpGet("count")]
@@ -59,7 +59,7 @@ public class VideosController : ControllerBase
     }
 
     [HttpDelete("{videoId}")]
-    [AllowAnonymous]
+    [Authorize(Roles = "User, Admin")]
     public async Task<IActionResult> DeleteAsync(long videoId)
         => Ok(await _service.DeleteAsync(videoId));
 

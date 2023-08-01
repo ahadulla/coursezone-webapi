@@ -20,8 +20,8 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    [AllowAnonymous]
-    public async Task<IActionResult> CreateAsync([FromForm] OrderCreateDto dto)
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> CreateAsync([FromQuery] OrderCreateDto dto)
     {
         var createValidetor = new OrderCreateValidator();
         var result = createValidetor.Validate(dto);
@@ -31,7 +31,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
 }

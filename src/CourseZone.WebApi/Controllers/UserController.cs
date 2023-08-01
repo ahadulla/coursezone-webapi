@@ -22,19 +22,16 @@ public class UserController : ControllerBase
     public async Task<IActionResult> CountAsync() => Ok(await _service.CountAsync());
 
     [HttpDelete("{userId}")]
-    [Authorize(Roles = "User")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "User, Admin")]
     public async Task<IActionResult> DeleteAsync(long userId) => Ok(await _service.DeleteAsync(userId));
 
     [HttpGet("{userId}")]
-    [Authorize(Roles = "User")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "User, Admin")]
     public async Task<IActionResult> GetByIdAsync(long userId) => Ok(await _service.GetByIdAsync(userId));
 
     [HttpPut("{userId}")]
-    [Authorize(Roles = "User")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> UpdateAsync(long userId, [FromForm] UserUpdateDto dto)
+    [Authorize(Roles = "User, Admin")]
+    public async Task<IActionResult> UpdateAsync(long userId, [FromBody] UserUpdateDto dto)
     {
         var updateValidator = new UserUpdateValidator();
         var result = updateValidator.Validate(dto);

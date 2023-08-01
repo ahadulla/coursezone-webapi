@@ -8,7 +8,10 @@ public class CourseUpdateValidator : AbstractValidator<CourseUpdateDto>
 {
     public CourseUpdateValidator()
     {
+        RuleFor(dto => dto.Language).NotNull().NotEmpty().WithMessage("Language field is required!");
         RuleFor(dto => dto.TypeId).NotNull().NotEmpty().WithMessage("TypeId field is required!");
+        RuleFor(dto => dto.Name).NotNull().NotEmpty().WithMessage("Name field is required!");
+        RuleFor(dto => dto.Price).NotNull().NotEmpty().GreaterThan(0).WithMessage("Price must be greater than 0");
 
         When(dto => dto.Image is not null, () =>
         {

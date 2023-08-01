@@ -6,8 +6,6 @@ public class CourseCreateDto
 {
     public string Language { get; set; } = string.Empty;
 
-    public long UserId { get; set; }
-
     public long TypeId { get; set; }
 
     public string Name { get; set; } = string.Empty;

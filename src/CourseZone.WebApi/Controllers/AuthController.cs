@@ -36,7 +36,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> SendCodeRegisterAsync(string email)
     {
         var result = EmailValidator.IsValid(email);
-        if (result == false) return BadRequest("Phone number is invalid!");
+        if (result == false) return BadRequest("Email number is invalid!");
 
         var serviceResult = await _authService.SendCodeForRegisterAsync(email);
         return Ok(new { serviceResult.Result, serviceResult.CachedVerificationMinutes });

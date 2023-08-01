@@ -6,6 +6,7 @@ using CourseZone.Domain.Entites.CourseZonePoints;
 using CourseZone.Domain.Entites.Orders;
 using CourseZone.Service.Common.Helpers;
 using CourseZone.Service.Dtos.Order;
+using CourseZone.Service.Interfaces.Auth;
 using CourseZone.Service.Interfaces.Common;
 using CourseZone.Service.Interfaces.Orders;
 
@@ -18,28 +19,30 @@ public class Orderservice : IOrderService
     private ICourseRepository _courseRepository;
     private ICourseZonePointRepository _courseZonePointRepository;
     private ITransactionService _transactionService;
+    private IIdentityService _identity;
 
     public Orderservice(IOrderRepository orderRepository, IPaginator paginator,
         ICourseRepository courseRepository, ICourseZonePointRepository courseZonePointRepository,
-        ITransactionService transactionService)
+        ITransactionService transactionService, IIdentityService identityService)
     {
         this._repository = orderRepository;
         this._paginator = paginator;
         this._courseRepository = courseRepository;
         this._courseZonePointRepository = courseZonePointRepository;
         this._transactionService = transactionService;
+        this._identity = identityService;
     }
     public async Task<bool> CreateAsync(OrderCreateDto dto)
     {
         Order order = new Order();
-        order.UserId = dto.UserId;
+        order.UserId = _identity.UserId;
         order.CourseId = dto.CourseId;
         order.CreateAt = TimeHelper.GetDateTime();
         var result = await _repository.CreateAsync(order);
         var course = await _courseRepository.GetByIdAsyncSpecial(dto.CourseId);
         if (course is not null)
         {
-            var check = await _transactionService.TransactionBuy(course.UserId, dto.UserId, course.Price);
+            var check = await _transactionService.TransactionBuy(course.UserId, order.UserId, course.Price);
             CourseZonePoint courseZonePoint = new CourseZonePoint();
             courseZonePoint.OrderId = result;
             courseZonePoint.Price = (course.Price / 100) * 10;

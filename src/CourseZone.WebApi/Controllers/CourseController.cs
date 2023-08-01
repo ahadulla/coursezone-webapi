@@ -56,7 +56,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpDelete("{courseId}")]
-    [Authorize(Roles = "User")]
+    [Authorize(Roles = "User, Admin")]
     public async Task<IActionResult> DeleteAsync(long courseId)
         => Ok(await _service.DeleteAsync(courseId));
 }

@@ -1,4 +1,4 @@
-﻿using CourseZone.Domain.Entites.Stars;
+﻿using CourseZone.Service.Dtos.Stars;
 using CourseZone.Service.Interfaces.Stars;
 using CourseZone.Service.Validators.Dtos.Stars;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +19,7 @@ public class StarsController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "User")]
-    public async Task<IActionResult> CreateAsync([FromQuery] Star dto)
+    public async Task<IActionResult> CreateAsync([FromQuery] StarCreateDto dto)
     {
         var createValidator = new StarCreateValidator();
         var result = createValidator.Validate(dto);
